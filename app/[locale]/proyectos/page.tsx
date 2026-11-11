@@ -5,7 +5,6 @@ import { localizePath, resolveLocale } from "@/src/lib/i18n";
 import { pageMetadata } from "@/src/lib/seo";
 import ProjectsHero from "@/src/components/work/ProjectsHero";
 import CtaBand from "@/src/components/ui/CtaBand";
-import WorkGrid from "@/src/components/work/WorkGrid";
 
 type PageProps = { params: Promise<{ locale: string }> };
 
@@ -28,7 +27,7 @@ export default async function WorkPage({ params }: PageProps) {
   const dict = getDictionary(locale);
   const projects = await fetchProjects(locale);
 
-  // Portadas para el collage del hero.
+  // Portadas de los proyectos para la grilla del hero.
   const heroItems = projects
     .filter((p) => p.cover)
     .map((p) => ({
@@ -40,9 +39,6 @@ export default async function WorkPage({ params }: PageProps) {
   return (
     <>
       <ProjectsHero title={dict.work.title} intro={dict.work.intro} items={heroItems} />
-      <section className="pb-24 md:pb-36">
-        <WorkGrid projects={projects} locale={locale} dict={dict} headingLevel="h2" />
-      </section>
       <CtaBand
         title={dict.home.cta.title}
         text={dict.home.cta.text}
