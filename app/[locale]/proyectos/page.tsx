@@ -3,7 +3,7 @@ import { getDictionary } from "@/src/content";
 import { fetchProjects } from "@/src/lib/projects-wp";
 import { localizePath, resolveLocale } from "@/src/lib/i18n";
 import { pageMetadata } from "@/src/lib/seo";
-import PageHeader from "@/src/components/ui/PageHeader";
+import ProjectsHero from "@/src/components/work/ProjectsHero";
 import CtaBand from "@/src/components/ui/CtaBand";
 import WorkGrid from "@/src/components/work/WorkGrid";
 
@@ -28,9 +28,18 @@ export default async function WorkPage({ params }: PageProps) {
   const dict = getDictionary(locale);
   const projects = await fetchProjects(locale);
 
+  // Portadas para el collage del hero.
+  const heroItems = projects
+    .filter((p) => p.cover)
+    .map((p) => ({
+      href: localizePath(locale, `proyectos/${p.slug}`),
+      title: p.title,
+      src: p.cover as string,
+    }));
+
   return (
     <>
-      <PageHeader title={dict.work.title} intro={dict.work.intro} />
+      <ProjectsHero title={dict.work.title} intro={dict.work.intro} items={heroItems} />
       <section className="pb-24 md:pb-36">
         <WorkGrid projects={projects} locale={locale} dict={dict} headingLevel="h2" />
       </section>
